@@ -34,6 +34,7 @@ class Trading_Gui:
 
         self.gui = widgets.HBox([self.make_order, self.own_orders, self.snapshot])
 
+        # attach make_order function of the order executor to the place_order button using ipython widgets
 
     def show(self):
         display(self.gui)

@@ -16,14 +16,14 @@ class Order_Executor:
             'price': price,
             'volume': volume,
         }
-        self.send(order)
+        self.send_order(order)
 
     def send_order(self, order):
         url = f"http://{self.host}:{self.port}"
-        payload = {
+        data = {
             'message': order,
             'name': self.name,
             'password': self.password
         }
-        res = requests.get(url, params=payload)
+        res = requests.post(url, data)
         print(res.json())
