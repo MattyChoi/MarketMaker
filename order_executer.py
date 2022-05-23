@@ -19,11 +19,11 @@ class Order_Executor:
         self.send_order(order)
 
     def send_order(self, order):
-        url = f"http://{self.host}:{self.port}"
+        url = f"http://{self.host}:{self.port}/"
         data = {
             'message': order,
             'name': self.name,
             'password': self.password
         }
-        res = requests.post(url, data)
+        res = requests.post(url, data=json.dumps(data))
         print(res.json())

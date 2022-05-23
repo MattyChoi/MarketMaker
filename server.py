@@ -17,7 +17,7 @@ orderbook = {
 }
 
 def match(name, password, order):
-   ladder = orderbook[order['prod_id']['ladder']]
+   ladder = orderbook[order['prod_id']]['ladder']
 
    return False
 
@@ -26,7 +26,7 @@ def add_to_logs(name, order):
 
 @app.route('/', methods = ['POST'])
 def place_order():
-   req = request.get_json()
+   req = request.get_json(force=True)
    order = req['message']
    name = req['name']
    password = req['password']
@@ -36,6 +36,7 @@ def place_order():
    if not match_status:
       add_to_logs(name, order)
    
+   return jsonify(orderbook[product_id]['ladder'])
    # first check if we can match the order (product_id, side, type, price, volume, name )
    # if we match the order, move the matched order to logs (price, volume, side, {id: name, volume: })
    # if not match, leave in ladder (price, volumne, owner, age)
@@ -48,7 +49,7 @@ def get_logs():
 
    
 @app.route('/ladder', methods = ['GET'])
-def get_logs():
+def get_ladder():
    return jsonify(orderbook[product_id]['ladder'])
 
 
