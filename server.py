@@ -3,7 +3,9 @@ from datetime import datetime
 
 app = Flask(__name__)
 
+# test id
 product_id = '12345'
+
 orderbook = {
    product_id: {
       'logs': [],
@@ -14,24 +16,33 @@ orderbook = {
    }
 }
 
+def match(name, password, order):
+   ladder = orderbook[order['prod_id']['ladder']]
+
+def add_to_logs(name, order):
+   pass
+
 @app.route('/', methods = ['POST'])
 def post_order():
-   order = request.get_json()
+   req = request.get_json()
+   order = req['message']
+   name = req['name']
+   password = req['password']
    
-   # first check if we can match the order
-
+   # first check if we can match the order (product_id, side, type, price, volume, name )
    # if we match the order, move the matched order to logs (price, volume, side, {id: name, volume: })
-
    # if not match, leave in ladder (price, volumne, owner, age)
+
 
    
 @app.route('/logs', methods = ['GET'])
 def get_logs():
-   return jsonify(orderbook)
+   return jsonify(orderbook[product_id]['logs'])
+
    
 @app.route('/ladder', methods = ['GET'])
 def get_logs():
-   return jsonify(orderbook)
+   return jsonify(orderbook[product_id]['ladder'])
 
 
 if __name__ == '__main__':

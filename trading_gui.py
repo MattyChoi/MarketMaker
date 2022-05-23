@@ -1,11 +1,12 @@
 import json
 import requests
 import ipywidgets as widgets
-# from order_executer import Order_Executor
+from trading_utils import *
+from order_executer import Order_Executor
 
 class Trading_Gui:
-    def __init__(self, host, port):
-        # self.executor = Order_Executor(host, port)
+    def __init__(self, host, port, name='', password=''):
+        self.executor = Order_Executor(host, port, name, password)
 
         self.prod = widgets.Text(placeholder='product', description='ID')
         self.side = widgets.Dropdown(options=['BUY', 'SELL'], description='Side',)
