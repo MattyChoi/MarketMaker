@@ -6,7 +6,7 @@ Simulate a market
 ## Needs to do
 - Finish prototype (get server to work and hook shitty python frontend to the flask server)
 - Migrate to java backend (use nodejs if this doesnt work)
-- Make a pretty frontend, ideas include, graphs for bid ask spread, requires fields and buttons for placing order, nice way to present active orders and orderbook
+- Make a pretty frontend (Use React or Vue? Will ask Rohan for help), ideas include, graphs for bid ask spread, requires fields and buttons for placing order, nice way to present active orders and orderbook
 - Use algorithms to make backend fast (heaps for orderbook, some other ideas later on) 
 
 ## Future Ideas
