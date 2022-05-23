@@ -16,13 +16,38 @@ orderbook = {
    }
 }
 
-def match(name, password, order):
-   ladder = orderbook[order['prod_id']]['ladder']
-
-   return False
-
-def add_to_logs(name, order):
+def fill_order(name, order):
    pass
+
+
+def add_to_ladder(name, order, side):
+   info = {
+      'price': order['price'],
+      'volume': order['volume'],
+      'name': name,
+      # in the future, need a parameter for time
+   }
+   orderbook[order['prod_id']]['ladder'][side].append(order)
+
+   # can optimize here
+   orderbook[order['prod_id']]['ladder'][side].sort(reverse=(side=='bids'), key=lambda x: x['price'])
+
+
+def match(name, order):
+   ladder = orderbook[order['prod_id']]['ladder']
+   side = order['side']
+   price = order['price']
+   if side == 'BUY':
+      if ladder['asks'][0]['price'] <= price:
+         fill_order(name, order)
+      else:
+         add_to_ladder(name, order, 'bids')
+   elif side == 'SELL':
+      if ladder['bids'][0]['price'] >= price:
+         fill_order(name, order)
+      else:
+         add_to_ladder(name, order, 'asks')
+
 
 @app.route('/', methods = ['POST'])
 def place_order():
@@ -31,16 +56,10 @@ def place_order():
    name = req['name']
    password = req['password']
 
-   match_status = match(name, password, order)
-
-   if not match_status:
-      add_to_logs(name, order)
-   
-   return jsonify(orderbook[product_id]['ladder'])
    # first check if we can match the order (product_id, side, type, price, volume, name )
    # if we match the order, move the matched order to logs (price, volume, side, {id: name, volume: })
    # if not match, leave in ladder (price, volumne, owner, age)
-
+   match(name, order)
 
    
 @app.route('/logs', methods = ['GET'])
