@@ -4,7 +4,8 @@ from datetime import datetime
 app = Flask(__name__)
 
 # test id
-product_id = '12345'
+product_id = '1'
+order_id = 0
 
 orderbook = {
    product_id: {
@@ -16,8 +17,21 @@ orderbook = {
    }
 }
 
-def fill_order(name, order):
-   pass
+
+def add_to_logs(price, volume, name, side, prod_id):
+   if side == 'bids':
+      side = 'BUY'
+   elif side == 'asks':
+      side = 'SELL'
+
+   info = {
+      'price': price,
+      'volume': volume,
+      'name': name,
+      'side': side,
+      # in the future, need a parameter for time
+   }
+   orderbook[prod_id]['logs'].append(info)
 
 
 def add_to_ladder(name, order, side):
@@ -25,28 +39,55 @@ def add_to_ladder(name, order, side):
       'price': order['price'],
       'volume': order['volume'],
       'name': name,
+      'order_id': order['order_id'],
       # in the future, need a parameter for time
    }
-   orderbook[order['prod_id']]['ladder'][side].append(order)
+   orderbook[order['prod_id']]['ladder'][side].append(info)
 
    # can optimize here
    orderbook[order['prod_id']]['ladder'][side].sort(reverse=(side=='bids'), key=lambda x: x['price'])
 
 
 def match(name, order):
+   global order_id
+   order['order_id'] = order_id
+   order_id += 1
+
    ladder = orderbook[order['prod_id']]['ladder']
    side = order['side']
    price = order['price']
-   if side == 'BUY':
-      if ladder['asks'][0]['price'] <= price:
-         fill_order(name, order)
+
+   mult = 1
+   aggress, passive = 'bids', 'asks'
+
+   if side == 'SELL':
+      aggress, passive = passive, aggress
+      mult = -1
+
+   # check if the price is low enough
+   while ladder[passive] and (mult * ladder[passive][0]['price'] <= mult * price):
+      passive_price = ladder[passive][0]['price']
+      passive_name = ladder[passive][0]['name']
+
+      if ladder[passive][0]['volume'] > order['volume']:
+         vol = order['volume']
+         ladder[passive][0]['volume'] -= order['volume']
+         order['volume'] = 0
       else:
-         add_to_ladder(name, order, 'bids')
-   elif side == 'SELL':
-      if ladder['bids'][0]['price'] >= price:
-         fill_order(name, order)
-      else:
-         add_to_ladder(name, order, 'asks')
+         vol = ladder[passive][0]['volume']
+         order['volume'] -= ladder[passive][0]['volume']
+         ladder[passive].pop(0)
+
+      add_to_logs(passive_price, vol, passive_name, passive, order['prod_id'])
+      add_to_logs(passive_price, vol, name, aggress, order['prod_id'])
+      print(orderbook[order['prod_id']]['logs'])
+
+      if not order['volume']:
+         return orderbook[order['prod_id']]['ladder']
+   
+   add_to_ladder(name, order, aggress)
+   print(orderbook[order['prod_id']]['ladder'])
+   return orderbook[order['prod_id']]['ladder']
 
 
 @app.route('/', methods = ['POST'])
@@ -59,8 +100,8 @@ def place_order():
    # first check if we can match the order (product_id, side, type, price, volume, name )
    # if we match the order, move the matched order to logs (price, volume, side, {id: name, volume: })
    # if not match, leave in ladder (price, volumne, owner, age)
-   match(name, order)
-
+   return match(name, order)
+   
    
 @app.route('/logs', methods = ['GET'])
 def get_logs():

@@ -4,10 +4,12 @@ from IPython.display import display
 import ipywidgets as widgets
 from trading_utils import *
 from order_executer import Order_Executor
+import time
 
 class Trading_Gui:
     def __init__(self, host, port, name='', password=''):
         self.exec = Order_Executor(host, port, name, password)
+        self.name = name
         self.url = f"http://{host}:{port}/"
 
         self.prod = widgets.Text(placeholder='product', description='ID')
@@ -48,13 +50,16 @@ class Trading_Gui:
     def show(self):
         display(self.gui)
 
-        while True:
-            ladder = requests.get(self.url + 'ladder').json()
-            logs = requests.get(self.url + 'logs').json()
-            active_orders = get_active_orders(ladder, self.name)
-            active_orders_str = ""
-            for order in active_orders:
+        # while True:
+        #     # get active orders and bid and ask spread from ladder
+        #     ladder = requests.get(self.url + 'ladder').json()
 
-            self.active_orders.value = active_orders_str
-            break
-                
+        #     # calculate number of positions, volume, and pnl from logs
+        #     logs = requests.get(self.url + 'logs').json()
+
+        #     active_orders = get_active_orders(ladder, self.name)
+        #     active_orders_str = "Active Orders:\n"
+        #     for order in active_orders:
+        #         active_orders_str += "    " + str(order) + '\n'
+        #     self.active_orders.value = active_orders_str
+
