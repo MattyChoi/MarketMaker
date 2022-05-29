@@ -4,20 +4,21 @@ import './App.css';
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Naren is a bad boy
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {/* column where you put  */}
+      <div id="placeOrder">
+
+      </div>
+
+      {/* column where the information is  */}
+      <div id="ownOrders">
+        
+      </div>
+
+      {/* column where you put  */}
+      <div id="allOrders">
+        
+      </div>
+    
     </div>
   );
 }
