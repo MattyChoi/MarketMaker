@@ -76,13 +76,15 @@ function App(props) {
               Bids:<br></br>
             </div>
           </label>
-          <input type="submit" value="Delete All Orders" className="row"/>
+          <form>
+            <input type="submit" value="Delete All Orders"/>
+          </form>
           <form>
             <label className="row">
                 Delete by Order ID:
                 <input type="text" name="delete"/>
             </label>
-            <input type="submit" value="Delete Order" className="row"/>
+            <input type="submit" value="Delete Order"/>
           </form>
         </div>
       </div>
