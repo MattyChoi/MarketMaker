@@ -37,6 +37,40 @@ function App() {
 
       </div>
 
+      {/* column where the information is  */}
+      <div id="ownOrders">
+        
+        <div id="activeOrders" name="activeOrders">
+          Active Orders
+        </div>
+
+        <div id="positions" name="positions" readonly>
+          Positions: 0
+        </div>
+
+      </div>
+
+      {/* column where you put  */}
+      <div id="allOrders">
+        
+        
+        <label>
+          Order Book
+          <div id="orderBook" name="orderBook">
+            Asks:<br></br>
+            Bids:<br></br>
+          </div>
+        </label>
+        <input type="submit" value="Delete All Orders"/>
+        <form>
+          <label>
+              Delete by Order ID:
+              <input type="text" name="delete"/>
+          </label>
+          <input type="submit" value="Delete Order"/>
+        </form>
+      </div>
+    
     </div>
   );
 }
