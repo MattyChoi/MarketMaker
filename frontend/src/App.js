@@ -59,7 +59,7 @@ function App(props) {
           <form onSubmit={placeOrder}>
             <label className="row">
               ID:
-              <input type="text" name="id" value={orderVals.id} onChange={handleChange} />
+              <input type="text" name="id" value={orderVals.id} onChange={handleChange}/>
             </label>
             <label className="row">
               Side:
@@ -77,11 +77,11 @@ function App(props) {
             </label>
             <label className="row">
               Price:
-              <input type="text" name="price" value={orderVals.price} onChange={handleChange} />
+              <input type="text" name="price" value={orderVals.price} onChange={handleChange}/>
             </label>
             <label className="row">
               Volume:
-              <input type="text" name="volume" value={orderVals.volume} onChange={handleChange} />
+              <input type="text" name="volume" value={orderVals.volume} onChange={handleChange}/>
             </label>
             <input type="submit" value="Submit" className="row" />
           </form>
