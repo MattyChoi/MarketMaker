@@ -1,6 +1,7 @@
 .body {
   display: flex;
   flex-direction: row;
+  background-color: pink;
 }
 
 .column {
@@ -13,4 +14,29 @@
 .row {
   display: flex;
   flex-direction: column;
+  padding: 2px;
+}
+
+.button {
+  background-color: violet;
+}
+
+.box {
+  background-color: rgb(231, 185, 236);
+
+}
+
+
+#positions {
+  border: 1px solid black;
+  height: 75px;
+}
+
+#activeOrders {
+  border: 1px solid black;
+  height: 150px;
+}
+
+#orderBook {
+  height: 125px;
 }

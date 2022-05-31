@@ -59,63 +59,64 @@ function App(props) {
           <form onSubmit={placeOrder}>
             <label className="row">
               ID:
-              <input type="text" name="id" value={orderVals.id} onChange={handleChange}/>
+              <input type="text" name="id" className="box" value={orderVals.id} onChange={handleChange}/>
             </label>
             <label className="row">
               Side:
-              <select name="side" id="side" value={orderVals.side} onChange={handleChange}>
+              <select name="side" id="side" className="box" value={orderVals.side} onChange={handleChange}>
                 <option value="BUY">BUY</option>
                 <option value="SELL">SELL</option>
               </select>
             </label>
             <label className="row">
               Order Type:
-              <select name="type" id="type" value={orderVals.type} onChange={handleChange}>
+              <select name="type" id="type" className="box" value={orderVals.type} onChange={handleChange}>
                 <option value="limit">Limit Order</option>
                 <option value="market">Market Order</option>
               </select>
             </label>
             <label className="row">
               Price:
-              <input type="text" name="price" value={orderVals.price} onChange={handleChange}/>
+              <input type="text" name="price" className="box" value={orderVals.price} onChange={handleChange}/>
             </label>
             <label className="row">
               Volume:
-              <input type="text" name="volume" value={orderVals.volume} onChange={handleChange}/>
+              <input type="text" name="volume" className="box" value={orderVals.volume} onChange={handleChange}/>
             </label>
-            <input type="submit" value="Submit" className="row" />
+            <input type="submit" value="Submit" className="button"/>
           </form>
         </div>
 
         <div id="ownOrders" className="column">
 
-          <div id="activeOrders" name="activeOrders" className="row">
+          <textarea id="activeOrders" name="activeOrders" className="row box" readOnly={true}>
             Active Orders
-          </div>
+          </textarea>
 
-          <div id="positions" name="positions" className="row">
+          <textarea id="positions" name="positions" className="row box" readOnly={true}>
             Positions: 0
-          </div>
+          </textarea>
 
         </div>
 
         <div id="allOrders" className="column">
           <label className="row">
             Order Book
-            <div id="orderBook" name="orderBook">
-              Asks:<br></br>
-              Bids:<br></br>
-            </div>
+            <textarea id="orderBook" name="orderBook" className="box" readOnly={true}>
+            Asks:
+            Bids:
+
+            </textarea>
           </label>
           <form>
-            <input type="submit" value="Delete All Orders"/>
+            <input type="submit" value="Delete All Orders" className="button"/>
           </form>
           <form>
             <label className="row">
               Delete by Order ID:
-              <input type="text" name="delete" />
+              <input type="text" name="delete" className="box"/>
             </label>
-            <input type="submit" value="Delete Order"/>
+            <input type="submit" value="Delete Order" className="button"/>
           </form>
         </div>
       </div>
