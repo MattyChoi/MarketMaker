@@ -7,6 +7,7 @@ from datetime import datetime
 cors = CORS()
 
 app = Flask(__name__)
+socketio = SocketIO(app)
 cors.init_app(app)
 
 # test id
@@ -119,5 +120,15 @@ def get_ladder():
    return jsonify(orderbook[product_id]["ladder"])
 
 
+@socketio.on('connect')
+def test_connect():
+   emit('my response', {'data': 'Connected'})
+
+
+@socketio.on('disconnect')
+def test_disconnect():
+   print('Client disconnected')
+
+
 if __name__ == "__main__":
-   app.run(host="localhost", port=9001, debug = True)
+   socketio.run(app, host="localhost", port=9001, debug = True)
