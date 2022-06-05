@@ -57,33 +57,33 @@ function App(props) {
       <div className="body">
         <div id="placeOrder" className="column">
           <form onSubmit={placeOrder}>
-            <label className="row">
+            <label className="row font1">
               ID:
-              <input type="text" name="id" className="box" value={orderVals.id} onChange={handleChange}/>
+              <input type="text" name="id" className="box font1" value={orderVals.id} onChange={handleChange}/>
             </label>
-            <label className="row">
+            <label className="row font1">
               Side:
-              <select name="side" id="side" className="box" value={orderVals.side} onChange={handleChange}>
+              <select name="side" id="side" className="box font1" value={orderVals.side} onChange={handleChange}>
                 <option value="BUY">BUY</option>
                 <option value="SELL">SELL</option>
               </select>
             </label>
-            <label className="row">
+            <label className="row font1">
               Order Type:
-              <select name="type" id="type" className="box" value={orderVals.type} onChange={handleChange}>
+              <select name="type" id="type" className="box font1" value={orderVals.type} onChange={handleChange}>
                 <option value="limit">Limit Order</option>
                 <option value="market">Market Order</option>
               </select>
             </label>
-            <label className="row">
+            <label className="row font1">
               Price:
-              <input type="text" name="price" className="box" value={orderVals.price} onChange={handleChange}/>
+              <input type="text" name="price" className="box font1" value={orderVals.price} onChange={handleChange}/>
             </label>
-            <label className="row">
+            <label className="row font1">
               Volume:
-              <input type="text" name="volume" className="box" value={orderVals.volume} onChange={handleChange}/>
+              <input type="text" name="volume" className="box font1" value={orderVals.volume} onChange={handleChange}/>
             </label>
-            <input type="submit" value="Submit" className="button"/>
+            <input type="submit" value="Submit" className="button font1"/>
           </form>
         </div>
 
@@ -100,8 +100,8 @@ function App(props) {
         </div>
 
         <div id="allOrders" className="column">
-          <label className="row">
-            Order Book
+          <label className="row font1">
+            Order Book:
             <textarea id="orderBook" name="orderBook" className="box" readOnly={true}>
             Asks:
             Bids:
@@ -109,14 +109,14 @@ function App(props) {
             </textarea>
           </label>
           <form>
-            <input type="submit" value="Delete All Orders" className="button"/>
+            <input type="submit" value="Delete All Orders" className="button font1"/>
           </form>
           <form>
-            <label className="row">
+            <label className="row font1">
               Delete by Order ID:
               <input type="text" name="delete" className="box"/>
             </label>
-            <input type="submit" value="Delete Order" className="button"/>
+            <input type="submit" value="Delete Order" className="button font1"/>
           </form>
         </div>
       </div>
