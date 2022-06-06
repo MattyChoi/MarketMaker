@@ -89,24 +89,24 @@ function App(props) {
 
         <div id="ownOrders" className="column">
 
-          <textarea id="activeOrders" name="activeOrders" className="row box" readOnly={true}>
+          <div id="activeOrders" name="activeOrders" className="row box font1 margin" readOnly={true}>
             Active Orders
-          </textarea>
+          </div>
 
-          <textarea id="positions" name="positions" className="row box" readOnly={true}>
+          <div id="positions" name="positions" className="row box font1 margin" readOnly={true}>
             Positions: 0
-          </textarea>
+          </div>
 
         </div>
 
         <div id="allOrders" className="column">
           <label className="row font1">
             Order Book:
-            <textarea id="orderBook" name="orderBook" className="box" readOnly={true}>
-            Asks:
-            Bids:
-
-            </textarea>
+            <div id="orderBook" name="orderBook" className="row box font1" readOnly={true}>
+              
+                Asks:<br></br><br></br>
+                Bids:
+            </div>
           </label>
           <form>
             <input type="submit" value="Delete All Orders" className="button font1"/>

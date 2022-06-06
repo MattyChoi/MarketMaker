@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Mukta:wght@200;300&display=swap');
+
+ul {
+  list-style-type: none;
+}
+
 .App {
   height: 100vh;
   width: auto;
@@ -33,29 +39,36 @@
   padding: 5px;
 }
 
+.row.box.font1.margin {
+  margin: 10px;
+}
+
 .button {
   background-color: violet;
 }
 
 .box {
   background-color: rgb(231, 185, 236);
-
 }
 
 #positions {
   border: 1px solid black;
   height: 75px;
+  width: 150px;
 }
 
 #activeOrders {
   border: 1px solid black;
   height: 150px;
+  width: 150px;
 }
 
 #orderBook {
+  border: 1px solid black;
   height: 125px;
 }
 
 .font1 {
-  font-family: 'Times New Roman', Times, serif;
+  font-family: 'Mukta', sans-serif;
+  font-size: 16px;
 }
