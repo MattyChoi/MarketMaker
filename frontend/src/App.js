@@ -1,8 +1,12 @@
-import './App.css';
-import React, { useState, useEffect } from 'react';
+import "./App.css";
+import React, { useState, useContext, useCallback, useEffect } from "react";
+import {SocketContext} from "./context/socket";
+import io from "socket.io-client";
 
 function App(props) {
+  const socket = useContext(SocketContext);
 
+  // define needed variables for making an order
   const [orderVals, setOrderVals] = useState({
     id: "",
     side: "buy",
@@ -11,6 +15,49 @@ function App(props) {
     volume: 0,
   });
 
+  // collect all the needed info from the ladder
+  const [ladderInfo, setLadderInfo] = useState({
+    active_orders: [],
+    all_bids: [],
+    all_asks: [],
+  });
+
+  // collect all the needed info from the logs
+  const [logInfo, setLogInfo] = useState({
+    pnl: 0,
+    positions: 0,
+  });
+
+  // working with sockets on the client side
+  useEffect(() => {
+    // socket = io.connect(
+    //   "http://localhost:9001", 
+    //   {
+    //     reconnection: true,
+    //     // transports: ["websocket"]
+    //   },
+    // );
+    // console.log("socket open");
+
+    socket.on("logs and ladders", data => {
+      setLadderInfo({
+        active_orders: data["active_orders"],
+        all_bids: data["all_bids"],
+        all_asks: data["all_asks"],
+      });
+
+      setLogInfo({
+        pnl: data["pnl"],
+        positions: data["positions"],
+      });
+    })
+
+    // return () => {
+    //   socket.close();
+    //   console.log("socket closed");
+    // }
+  }, []);
+  
   function handleChange(e) {
     const { name, value } = e.target;
     setOrderVals(prev => ({
@@ -25,29 +72,30 @@ function App(props) {
     const volume = parseInt(orderVals.volume);
     if ((orderVals.id !== "") && (orderVals.price !== 0) && (orderVals.volume !== 0)) {
       const order = {
-        'prod_id': orderVals.id,
-        'side': orderVals.side,
-        'type': orderVals.type,
-        'price': price,
-        'volume': volume,
+        "prod_id": orderVals.id,
+        "side": orderVals.side,
+        "type": orderVals.type,
+        "price": price,
+        "volume": volume,
       };
 
       const data = {
-        'message': order,
-        'name': "",
-        'password': "",
+        "message": order,
+        "name": "",
+        "password": "",
       };
 
-      const res = fetch('http://localhost:9001/make', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data),
-      }).then(response => console.log(response.json()))
-        .catch(error => console.log(error))
+      socket.emit("send order", data);
+      console.log("send order");
 
-      console.log(res);
+      // fetch("http://localhost:9001/make", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json"
+      //   },
+      //   body: JSON.stringify(data),
+      // }).then(response => console.log(response.json()))
+      //   .catch(error => console.log(error))
 
     }
   }
@@ -103,9 +151,17 @@ function App(props) {
           <label className="row font1">
             Order Book:
             <div id="orderBook" name="orderBook" className="row box font1" readOnly={true}>
-              
-                Asks:<br></br><br></br>
-                Bids:
+              Asks:
+              {/* need to fix formatting here in terms of both the css and what needs to be shown */}
+              {ladderInfo["all_asks"].map(ask => {
+                  return <span>{ask["price"]}</span>;
+              })}
+              <br/>
+              Bids:
+              {/* need to fix formatting here in terms of both the css and what needs to be shown */}
+              {ladderInfo["all_bids"].map(bid => {
+                  return <span>{bid["price"]}</span>;
+              })}
             </div>
           </label>
           <form>

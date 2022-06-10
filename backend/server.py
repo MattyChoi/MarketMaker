@@ -1,14 +1,23 @@
 from flask import Flask, request, jsonify
-from flask_socketio import SocketIO, emit
+from flask_socketio import SocketIO, send, emit, join_room, leave_room
 from threading import Thread, Event
 from flask_cors import CORS
 from datetime import datetime
+from trading_utils import *
 
 cors = CORS()
 
 app = Flask(__name__)
-socketio = SocketIO(app)
+app.config['SECRET_KEY'] = 'secretkey'
+app.config['DEBUG'] = True
+app.config['CORS_HEADERS'] = 'Content-Type'
 cors.init_app(app)
+socketio = SocketIO(
+   app, 
+   logger=True, 
+   engineio_logger=True, 
+   cors_allowed_origins="http://localhost:3000"
+)
 
 # test id
 product_id = "1"
@@ -19,7 +28,7 @@ orderbook = {
       "logs": [],
       "ladder": {
          "bids": [],
-         "asks": []
+         "asks": [],
       },
    }
 }
@@ -66,7 +75,7 @@ def match(name, order):
 
    mult = 1
    aggress, passive = "bids", "asks"
-   print(side)
+   
    if side == "SELL":
       aggress, passive = passive, aggress
       mult = -1
@@ -120,14 +129,40 @@ def get_ladder():
    return jsonify(orderbook[product_id]["ladder"])
 
 
-@socketio.on('connect')
-def test_connect():
-   emit('my response', {'data': 'Connected'})
+# # keyword connect socketio method
+# @socketio.on("connect")
+# def test_connect():
+#    emit("my response", {"data": "Connected"})
 
 
-@socketio.on('disconnect')
-def test_disconnect():
-   print('Client disconnected')
+# broadcast ladder info to everyone
+@socketio.on("send order")
+def send_ladder(data):
+   order = data["message"]
+   name = data["name"]
+   password = data["password"]
+
+   # first check if we can match the order (product_id, side, type, price, volume, name )
+   # if we match the order, move the matched order to logs (price, volume, side, {id: name, volume: })
+   # if not match, leave in ladder (price, volumne, owner, age)
+   match(name, order)
+
+   ladder = orderbook[order["prod_id"]]["ladder"]
+   logs = orderbook[order["prod_id"]]["logs"]
+
+   bids, asks = get_bids_and_asks(ladder)
+   pnl, positions = compute_pnl_and_positions(logs, name)
+
+   newData = {
+      "active_orders": get_active_orders(ladder, name),
+      "all_bids": bids,
+      "all_asks": asks,
+      "pnl": pnl,
+      "positions": positions,
+   }
+
+
+   emit("logs and ladders", newData, broadcast=True,)
 
 
 if __name__ == "__main__":
