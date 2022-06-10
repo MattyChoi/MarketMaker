@@ -138,11 +138,18 @@ function App(props) {
         <div id="ownOrders" className="column">
 
           <div id="activeOrders" name="activeOrders" className="row box font1 margin" readOnly={true}>
-            Active Orders
+            Active Orders:
+            <br/>
+            {/* need to fix formatting here in terms of both the css and what needs to be shown */}
+            {ladderInfo["active_orders"].map(order => {
+                return <span>{order["price"]}</span>;
+            })}
           </div>
 
           <div id="positions" name="positions" className="row box font1 margin" readOnly={true}>
-            Positions: 0
+            Positions: {logInfo["positions"]}
+            <br/>
+            PNL: {logInfo["pnl"]}
           </div>
 
         </div>
